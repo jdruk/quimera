@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +10,8 @@ import { StationGroupModule } from './station-group/station-group.module';
 import { StationModule } from './station/station.module';
 import { StationConnectorsModule } from './station-connectors/station-connectors.module';
 import { AuthModule } from './auth/auth.module';
+import { TenancyMiddleware } from './middleware/tenancy.middleware';
+import { AsyncContextService } from './common/async-context.service';
 
 @Module({
   imports: [
@@ -23,6 +25,12 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AsyncContextService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TenancyMiddleware)
+      .forRoutes('*');
+  }
+}

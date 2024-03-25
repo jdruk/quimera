@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Station } from '../../station/entities/station.entity';
+import { Saas } from '../../saas/entities/saas.entity';
   
 @Entity()
 export class StationConnector {
@@ -25,6 +26,10 @@ export class StationConnector {
 
   @Column()
   stationId: number;
+
+  @ManyToOne(() => Saas, (saas) => saas.stationConnectors)
+  @JoinColumn({ name: 'saasId' })
+  saas: Saas;
 
   @ManyToOne(() => Station, station => station.stationConnectors)
   @JoinColumn({ name: 'stationId' })

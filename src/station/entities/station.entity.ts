@@ -10,6 +10,7 @@ import {
   } from 'typeorm';
   import { StationGroup } from '../../station-group/entities/station-group.entity';
   import { StationConnector } from '../../station-connectors/entities/station-connector.entity';
+import { Saas } from '../../saas/entities/saas.entity';
 
   @Entity()
   export class Station {
@@ -31,6 +32,10 @@ import {
     @ManyToOne(() => StationGroup, stationGroup => stationGroup.stations)
     @JoinColumn({ name: 'stationGroupId' })
     stationGroup: StationGroup;
+
+    @ManyToOne(() => Saas, (saas) => saas.stations)
+    @JoinColumn({ name: 'saasId' })
+    saas: Saas;
 
     @OneToMany(() => StationConnector, stationConnector => stationConnector.station)
     stationConnectors: StationConnector[];

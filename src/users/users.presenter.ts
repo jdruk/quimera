@@ -13,6 +13,7 @@ export class UsersPresenter {
           name: user.name,
           email: user.email,
           updated_at: user.updatedAt,
+          saasId: user.saasId,
         };
       }),
     };
